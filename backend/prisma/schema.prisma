@@ -1,0 +1,282 @@
+// This is your Prisma schema file
+// Multi-tenant SaaS for OLCA Rental
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  SALES
+  VIEWER
+  CLIENT
+}
+
+enum QuoteStatus {
+  PENDIENTE
+  REVISANDO
+  APROBADA
+  RECHAZADA
+  CONVERTIDA
+  EXPIRADA
+}
+
+enum ERPType {
+  ODOO
+  SAP
+  NETSUITE
+  CUSTOM
+}
+
+enum SyncStatus {
+  PENDIENTE
+  EN_PROGRESO
+  COMPLETADO
+  ERROR
+}
+
+// ============================================
+// MULTI-TENANT: Organization
+// ============================================
+
+model Organization {
+  id        String   @id @default(cuid())
+  nombre    String
+  dominio   String   @unique
+  slug      String   @unique
+  logo      String?
+  activa    Boolean  @default(true)
+  plan      String   @default("starter") // starter, professional, enterprise
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users     User[]
+  erpConfig ERPConfig?
+  quotes    Quote[]
+  products  Product[]
+  syncLogs  SyncLog[]
+
+  @@index([slug])
+  @@index([dominio])
+}
+
+// ============================================
+// USER
+// ============================================
+
+model User {
+  id             String       @id @default(cuid())
+  email          String
+  password       String
+  nombre         String
+  apellido       String?
+  telefono       String?
+  avatar         String?
+  rol            Role         @default(SALES)
+  activo         Boolean      @default(true)
+  ultimoLogin    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Tenant
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  // Relations
+  quotes         Quote[]      @relation("CreatedBy")
+  validatedQuotes Quote[]     @relation("ValidatedBy")
+
+  @@unique([email, organizationId])
+  @@index([email])
+  @@index([organizationId])
+}
+
+// ============================================
+// PRODUCT (synced from ERP)
+// ============================================
+
+model Product {
+  id                    String       @id @default(cuid())
+  erpId                 String
+  nombre                String
+  descripcion           String?
+  categoria             String
+  subcategoria          String?
+  precioBase            Float
+  precioConIva          Float?
+  stock                 Int          @default(0)
+  stockMinimo           Int          @default(0)
+  imagen                String?
+  imagenes              String[]
+  especificaciones      Json?
+  marca                 String?
+  modelo                String?
+  anio                  Int?
+  activo                Boolean      @default(true)
+  ultimaSincronizacion  DateTime
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  // Tenant
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  // Relations
+  quoteItems            QuoteItem[]
+
+  @@unique([erpId, organizationId])
+  @@index([organizationId])
+  @@index([categoria])
+  @@index([ultimaSincronizacion])
+}
+
+// ============================================
+// QUOTE
+// ============================================
+
+model Quote {
+  id             String      @id @default(cuid())
+  numero         String      // Ej: OLCA-2026-00123
+  tokenPublico   String      @unique @default(cuid()) // para compartir sin login
+
+  // Tenant
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  // Comercial asignado
+  user           User         @relation("CreatedBy", fields: [userId], references: [id])
+  userId         String
+
+  // Cliente
+  clienteNombre  String
+  clienteEmail   String
+  clienteTelefono String?
+  clienteEmpresa String?
+  clienteCuit    String?
+  clienteNotas   String?
+
+  // Estado
+  estado         QuoteStatus  @default(PENDIENTE)
+
+  // Montos
+  subtotal       Float
+  descuentoPct   Float        @default(0)
+  descuentoMonto Float        @default(0)
+  ivaRate        Float        @default(21) // % IVA Argentina
+  ivaMonto       Float
+  total          Float
+  moneda         String       @default("ARS")
+
+  // Items
+  items          QuoteItem[]
+
+  // Seguimiento
+  validadaPor    User?        @relation("ValidatedBy", fields: [validadaPorId], references: [id])
+  validadaPorId  String?
+  validadaEn     DateTime?
+  rechazadaMotivo String?
+  convertidaVenta Boolean     @default(false)
+  notas          String?
+  vigenteHasta   DateTime?
+
+  // Analytics
+  vistaPor       String[]     @default([]) // IPs que vieron la cotización
+  abiertaEmail   Boolean      @default(false)
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([numero, organizationId])
+  @@index([organizationId])
+  @@index([clienteEmail])
+  @@index([estado])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+// ============================================
+// QUOTE ITEM
+// ============================================
+
+model QuoteItem {
+  id             String   @id @default(cuid())
+  quote          Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId        String
+
+  product        Product  @relation(fields: [productId], references: [id])
+  productId      String
+
+  // Snapshot del producto al momento de cotizar
+  productoNombre String
+  productoErpId  String
+
+  cantidad       Int
+  fechaInicio    DateTime
+  fechaFin       DateTime
+  diasAlquiler   Int      // calculado
+  precioUnitario Float    // precio/día
+  subtotal       Float
+
+  createdAt      DateTime @default(now())
+
+  @@index([quoteId])
+  @@index([productId])
+}
+
+// ============================================
+// ERP CONFIG
+// ============================================
+
+model ERPConfig {
+  id              String       @id @default(cuid())
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String       @unique
+
+  tipo            ERPType
+  apiUrl          String
+  apiKey          String       @db.Text
+  apiSecret       String?      @db.Text
+  database        String?      // Para Odoo: nombre de la DB
+  username        String?      // Para Odoo: usuario
+  entityMapping   Json?        // Mapeo de campos ERP → Producto
+  syncCadencia    Int          @default(60) // minutos entre sync
+  syncActivo      Boolean      @default(true)
+  ultimoSync      DateTime?
+  proximoSync     DateTime?
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+// ============================================
+// SYNC LOG
+// ============================================
+
+model SyncLog {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  status         SyncStatus
+  productosSync  Int          @default(0)
+  errores        Int          @default(0)
+  detalles       Json?
+  duracionMs     Int?
+  iniciadoEn     DateTime     @default(now())
+  completadoEn   DateTime?
+
+  @@index([organizationId])
+  @@index([iniciadoEn])
+}
