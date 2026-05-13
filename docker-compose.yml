@@ -54,7 +54,8 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-olca}:${POSTGRES_PASSWORD:-olca_secret}@postgres:5432/${POSTGRES_DB:-olca_db}
-      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret}@redis:6379
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_secret}
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_me_refresh}
       PORT: 3001
