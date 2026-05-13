@@ -35,11 +35,12 @@ nano .env   # Completar TODOS los valores de producción
 - `SMTP_*` — credenciales de email
 - `FRONTEND_URL` — URL pública de producción
 
-## 3. Build y deploy
+## 3. Deploy
 
 ```bash
-# Build y levantar todos los servicios
-docker compose --profile production up -d --build
+# Descargar imágenes y levantar todos los servicios
+docker compose pull
+docker compose --profile production up -d
 
 # Verificar
 docker compose ps
@@ -92,7 +93,8 @@ sudo certbot --nginx -d cotizador.olca.com.ar
 
 ```bash
 git pull
-docker compose --profile production up -d --build
+docker compose pull
+docker compose --profile production up -d
 docker compose exec backend npx prisma migrate deploy
 ```
 
