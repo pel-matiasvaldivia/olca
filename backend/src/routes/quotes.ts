@@ -79,8 +79,20 @@ export default async function quoteRoutes(app: FastifyInstance) {
     },
   }, async (req, reply) => {
     const body = req.body as { items: CreateQuoteBody['items']; descuentoPct?: number; orgSlug?: string };
-    const calc = await calculatePrice(body.items, body.descuentoPct);
-    return reply.send({ success: true, data: calc });
+    
+    let orgId: string | undefined;
+    if (body.orgSlug) {
+      const org = await prisma.organization.findUnique({ where: { slug: body.orgSlug } });
+      orgId = org?.id;
+    }
+
+    try {
+      const calc = await calculatePrice(body.items, body.descuentoPct, orgId);
+      return reply.send({ success: true, data: calc });
+    } catch (error: any) {
+      req.log.error(error);
+      return reply.code(400).send({ success: false, error: error.message || 'Error al calcular cotización' });
+    }
   });
 
   // POST /api/quotes — crear cotización (público para clientes)
