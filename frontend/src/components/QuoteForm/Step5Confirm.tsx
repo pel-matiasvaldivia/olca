@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Send, Loader2, Link as LinkIcon } from 'lucide-react';
 import { quotesApi } from '../../services/api';
 import { useQuoteStore } from '../../store/quoteStore';
+import { useAuthStore } from '../../store/authStore';
 import { formatMoney } from '../../utils/cn';
 import toast from 'react-hot-toast';
 
@@ -12,6 +13,8 @@ export default function Step5Confirm() {
     clientData, items, calculation, nextStep,
     setSubmitted, submittedQuoteNumero, submittedQuoteId, reset,
   } = useQuoteStore();
+  
+  const { isAuthenticated } = useAuthStore();
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -116,9 +119,9 @@ export default function Step5Confirm() {
         className="btn-primary w-full py-4 text-base"
       >
         {mutation.isPending ? (
-          <><Loader2 className="w-5 h-5 animate-spin" /> Enviando cotización...</>
+          <><Loader2 className="w-5 h-5 animate-spin" /> Enviando...</>
         ) : (
-          <><Send className="w-5 h-5" /> Enviar cotización</>
+          <><Send className="w-5 h-5" /> {isAuthenticated ? 'Enviar cotización' : 'Recibir cotización'}</>
         )}
       </button>
 
