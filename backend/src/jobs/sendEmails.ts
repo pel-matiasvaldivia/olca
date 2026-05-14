@@ -14,6 +14,11 @@ function formatMoney(n: number) {
 }
 
 export async function sendQuoteEmail(quoteId: string): Promise<void> {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    logger.warn(`Email NO enviado para cotización ${quoteId}: Credenciales SMTP no configuradas.`);
+    return;
+  }
+
   try {
     const quote = await prisma.quote.findUnique({
       where: { id: quoteId },
