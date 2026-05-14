@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { prisma } from '../config/database';
 import { authenticate } from '../middleware/auth';
 import { JWTPayload } from '../types';
+import { sendTestEmail } from '../jobs/sendEmails';
 
 export default async function settingsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate);
@@ -46,5 +47,21 @@ export default async function settingsRoutes(app: FastifyInstance) {
     });
 
     return reply.send({ success: true, data: config });
+  });
+
+  // POST /api/settings/email/test
+  app.post('/email/test', async (req, reply) => {
+    const body = req.body as any;
+
+    try {
+      await sendTestEmail(body, body.testEmail);
+      return reply.send({ success: true, message: 'Email de prueba enviado exitosamente' });
+    } catch (err: any) {
+      return reply.status(500).send({ 
+        success: false, 
+        message: 'Error al enviar email de prueba',
+        error: err.message
+      });
+    }
   });
 }

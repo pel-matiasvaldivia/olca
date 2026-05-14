@@ -70,6 +70,7 @@ export const quotesApi = {
 export const settingsApi = {
   getEmailConfig: () => api.get('/settings/email'),
   updateEmailConfig: (payload: unknown) => api.post('/settings/email', payload),
+  testEmail: (data: any) => api.post('/settings/email/test', data),
 };
 
 // ── Dashboard ─────────────────────────────────────────
