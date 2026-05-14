@@ -18,6 +18,7 @@ export default function Step4Price() {
       fechaFin: i.fechaFin,
     })),
     descuentoPct,
+    orgSlug: 'olca',
   };
 
   const { data, isLoading, isError } = useQuery({

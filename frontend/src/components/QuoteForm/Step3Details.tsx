@@ -8,7 +8,9 @@ export default function Step3Details() {
 
   const today = new Date().toISOString().split('T')[0];
   const minEnd = (start: string) => {
+    if (!start) return today;
     const d = new Date(start);
+    if (isNaN(d.getTime())) return today;
     d.setDate(d.getDate() + 1);
     return d.toISOString().split('T')[0];
   };

@@ -14,8 +14,10 @@ export function formatDate(date: string | Date): string {
 }
 
 export function diffDays(start: string, end: string): number {
+  if (!start || !end) return 0;
   const s = new Date(start).getTime();
   const e = new Date(end).getTime();
+  if (isNaN(s) || isNaN(e)) return 0;
   return Math.max(Math.round((e - s) / 86400000), 0);
 }
 
