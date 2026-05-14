@@ -62,6 +62,7 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_secret}
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_me_refresh}
+      FRONTEND_URL: https://cotizador.olca.alertasenlinea.com.ar
       PORT: 3001
       NODE_ENV: production
     ports:
