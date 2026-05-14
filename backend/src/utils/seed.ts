@@ -57,6 +57,23 @@ async function seed() {
   logger.info('   Admin:        admin@olca.com / Admin123!');
   logger.info('   Ventas:       ventas@olca.com / Admin123!');
   logger.info('');
+  // --- Mock Products ---
+  const mockProducts = [
+    { erpId: 'M-01', nombre: 'Toyota Hilux 4x4 DX', categoria: 'Pickups', precioBase: 45000, stock: 10, marca: 'Toyota', modelo: 'Hilux', anio: 2024, imagen: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80', imagenes: ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'], ultimaSincronizacion: new Date(), organizationId: org.id },
+    { erpId: 'M-02', nombre: 'Ford Ranger XLT', categoria: 'Pickups', precioBase: 48000, stock: 5, marca: 'Ford', modelo: 'Ranger', anio: 2024, imagen: 'https://images.unsplash.com/photo-1600122956557-01121d5a3fc5?auto=format&fit=crop&w=800&q=80', imagenes: ['https://images.unsplash.com/photo-1600122956557-01121d5a3fc5?auto=format&fit=crop&w=800&q=80'], ultimaSincronizacion: new Date(), organizationId: org.id },
+    { erpId: 'M-03', nombre: 'VW Amarok V6', categoria: 'Pickups', precioBase: 55000, stock: 3, marca: 'Volkswagen', modelo: 'Amarok', anio: 2024, imagen: 'https://images.unsplash.com/photo-1559404283-7d7ea2687e14?auto=format&fit=crop&w=800&q=80', imagenes: ['https://images.unsplash.com/photo-1559404283-7d7ea2687e14?auto=format&fit=crop&w=800&q=80'], ultimaSincronizacion: new Date(), organizationId: org.id },
+    { erpId: 'M-04', nombre: 'Toyota Corolla Cross', categoria: 'SUVs', precioBase: 38000, stock: 4, marca: 'Toyota', modelo: 'Corolla Cross', anio: 2023, imagen: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80', imagenes: ['https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80'], ultimaSincronizacion: new Date(), organizationId: org.id }
+  ];
+
+  for (const prod of mockProducts) {
+    await prisma.product.upsert({
+      where: { erpId_organizationId: { erpId: prod.erpId, organizationId: org.id } },
+      update: prod,
+      create: prod,
+    });
+  }
+  logger.info(`✅ ${mockProducts.length} vehículos Mock cargados`);
+  
   logger.info('✅ Seed completed!');
 }
 
