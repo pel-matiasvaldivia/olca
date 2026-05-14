@@ -16,7 +16,13 @@ export default function Step5Confirm() {
   const mutation = useMutation({
     mutationFn: () =>
       quotesApi.create({
-        ...clientData,
+        clienteNombre: clientData.nombre,
+        clienteEmail: clientData.email,
+        clienteTelefono: clientData.telefono,
+        clienteEmpresa: clientData.empresa,
+        clienteCuit: clientData.cuit,
+        clienteNotas: clientData.notas,
+        descuentoPct: calculation?.descuentoPct || 0,
         items: items.map((i) => ({
           productId: i.productId,
           cantidad: i.cantidad,
