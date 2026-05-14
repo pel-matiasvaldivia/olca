@@ -52,11 +52,11 @@ function Overview() {
     <div className="animate-in space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-dark-50">Dashboard</h1>
-          <p className="text-dark-400 text-sm mt-1">Vista general de tu operación</p>
+          <h1 className="text-2xl font-black text-dark-900">Dashboard</h1>
+          <p className="text-dark-500 text-sm font-medium mt-1">Vista general de tu operación</p>
         </div>
         <button onClick={() => syncMutation.mutate()} disabled={syncMutation.isPending}
-          className="btn-secondary gap-2">
+          className="btn-secondary gap-2 border-brand-500 text-brand-500">
           <RefreshCw className={`w-4 h-4 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
           Sincronizar ERP
         </button>
@@ -82,21 +82,21 @@ function Overview() {
 
       {/* Recent quotes */}
       {recent.length > 0 && (
-        <div className="card p-6">
+        <div className="card p-6 bg-white border-dark-200">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-dark-100">Últimas cotizaciones</h2>
-            <Link to="/dashboard/quotes" className="text-sm text-brand-400 hover:underline">Ver todas →</Link>
+            <h2 className="font-bold text-dark-900 uppercase tracking-widest text-xs">Últimas cotizaciones</h2>
+            <Link to="/dashboard/quotes" className="text-xs font-bold text-brand-600 hover:underline uppercase tracking-wider">Ver todas →</Link>
           </div>
           <div className="space-y-2">
             {recent.map((q: { id: string; numero: string; clienteNombre: string; clienteEmpresa?: string; estado: string; total: number; createdAt: string }) => (
               <div key={q.id} className="flex items-center justify-between py-2.5 border-b border-dark-700 last:border-0">
                 <div>
-                  <span className="text-sm font-semibold text-dark-100">{q.numero}</span>
-                  <span className="text-dark-400 text-xs ml-2">— {q.clienteNombre}{q.clienteEmpresa ? ` (${q.clienteEmpresa})` : ''}</span>
+                  <span className="text-sm font-bold text-dark-900">{q.numero}</span>
+                  <span className="text-dark-500 text-xs ml-2">— {q.clienteNombre}{q.clienteEmpresa ? ` (${q.clienteEmpresa})` : ''}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`badge badge-${q.estado.toLowerCase()}`}>{q.estado}</span>
-                  <span className="text-brand-400 font-semibold text-sm">{formatMoney(q.total)}</span>
+                  <span className="text-brand-600 font-black text-sm">{formatMoney(q.total)}</span>
                 </div>
               </div>
             ))}
@@ -116,9 +116,9 @@ export default function Dashboard() {
   const handleLogout = () => { logout(); navigate('/login'); };
 
   const Sidebar = () => (
-    <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-dark-900 border-r border-dark-700 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
-      <div className="h-16 flex items-center px-6 border-b border-dark-700">
-        <span className="text-lg font-black tracking-widest gradient-text">OLCA RENTAL</span>
+    <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-dark-200 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+      <div className="h-16 flex items-center px-6 border-b border-dark-200">
+        <span className="text-lg font-black tracking-widest text-brand-600">OLCA RENTAL</span>
       </div>
 
       <nav className="flex-1 p-4 space-y-1">
@@ -126,10 +126,10 @@ export default function Dashboard() {
           const active = location.pathname === to;
           return (
             <Link key={to} to={to} onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${
                 active
-                  ? 'bg-brand-400/10 text-brand-400 border border-brand-400/20'
-                  : 'text-dark-400 hover:text-dark-100 hover:bg-dark-800'
+                  ? 'bg-brand-50 text-brand-600 border border-brand-100'
+                  : 'text-dark-500 hover:text-brand-600 hover:bg-brand-50/50'
               }`}>
               <Icon className="w-5 h-5" />
               {label}
@@ -140,15 +140,15 @@ export default function Dashboard() {
 
       <div className="p-4 border-t border-dark-700">
         <div className="flex items-center gap-3 mb-3 px-2">
-          <div className="w-8 h-8 rounded-full bg-brand-400/20 flex items-center justify-center text-brand-400 font-bold text-sm">
+          <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm">
             {user?.nombre?.[0]?.toUpperCase()}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-dark-100 truncate">{user?.nombre}</p>
-            <p className="text-xs text-dark-500 truncate">{user?.rol}</p>
+            <p className="text-sm font-bold text-dark-900 truncate">{user?.nombre}</p>
+            <p className="text-[10px] font-bold text-dark-400 uppercase tracking-widest truncate">{user?.rol}</p>
           </div>
         </div>
-        <button onClick={handleLogout} className="btn-ghost w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-900/20">
+        <button onClick={handleLogout} className="btn-ghost w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">
           <LogOut className="w-4 h-4" /> Cerrar sesión
         </button>
       </div>
@@ -156,7 +156,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-dark-950 flex">
+    <div className="min-h-screen bg-dark-50 flex">
       <Sidebar />
 
       {/* Mobile overlay */}
@@ -166,9 +166,9 @@ export default function Dashboard() {
 
       <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
         {/* Top bar */}
-        <header className="h-16 glass border-b border-dark-700/50 flex items-center px-4 md:px-8 gap-4 sticky top-0 z-30">
+        <header className="h-16 bg-white border-b border-dark-200 flex items-center px-4 md:px-8 gap-4 sticky top-0 z-30">
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden btn-ghost p-2">
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {sidebarOpen ? <X className="w-5 h-5 text-dark-600" /> : <Menu className="w-5 h-5 text-dark-600" />}
           </button>
           <div className="flex-1" />
           <Link to="/cotizar" target="_blank" className="btn-primary text-xs py-2 px-4">

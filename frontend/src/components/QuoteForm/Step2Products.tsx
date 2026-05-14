@@ -30,12 +30,12 @@ export default function Step2Products() {
     <div className="animate-in space-y-6">
       <div className="card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-brand-400/10 flex items-center justify-center">
-            <Car className="w-5 h-5 text-brand-400" />
+          <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center">
+            <Car className="w-5 h-5 text-brand-600" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-dark-50">Seleccioná los vehículos</h2>
-            <p className="text-sm text-dark-400">Podés elegir uno o más</p>
+            <h2 className="text-xl font-black text-dark-900">Seleccioná los vehículos</h2>
+            <p className="text-sm text-dark-500 font-medium">Podés elegir uno o más</p>
           </div>
         </div>
 
@@ -72,8 +72,8 @@ export default function Step2Products() {
                   onClick={() => toggle(p)}
                   className={`text-left rounded-xl border transition-all duration-200 overflow-hidden group ${
                     selected
-                      ? 'border-brand-400 bg-brand-400/5 shadow-brand'
-                      : 'border-dark-600 bg-dark-800 hover:border-dark-400'
+                      ? 'border-brand-500 bg-brand-50 shadow-md'
+                      : 'border-dark-200 bg-white hover:border-brand-400'
                   }`}
                 >
                   {p.imagen && (
@@ -83,17 +83,17 @@ export default function Step2Products() {
                   )}
                   <div className="p-4">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <span className="font-semibold text-dark-100 text-sm leading-tight">{p.nombre}</span>
+                      <span className="font-bold text-dark-900 text-sm leading-tight">{p.nombre}</span>
                       <div className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                        selected ? 'bg-brand-400 border-brand-400' : 'border-dark-500'
+                        selected ? 'bg-brand-500 border-brand-500' : 'border-dark-300'
                       }`}>
-                        {selected && <Check className="w-3 h-3 text-dark-900" />}
+                        {selected && <Check className="w-3 h-3 text-white" />}
                       </div>
                     </div>
                     <div className="text-xs text-dark-500 mb-3">{p.categoria}{p.marca ? ` · ${p.marca}` : ''}{p.anio ? ` ${p.anio}` : ''}</div>
                     <div className="flex items-center justify-between">
-                      <span className="text-brand-400 font-bold">{formatMoney(p.precioBase)}<span className="text-dark-500 font-normal text-xs">/día</span></span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${p.stock > 0 ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'}`}>
+                      <span className="text-brand-600 font-black">{formatMoney(p.precioBase)}<span className="text-dark-400 font-bold text-[10px] uppercase tracking-wider ml-1">/día</span></span>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                         {p.stock > 0 ? `${p.stock} disp.` : 'Sin stock'}
                       </span>
                     </div>
@@ -107,12 +107,12 @@ export default function Step2Products() {
 
       {/* Selected summary + continue */}
       {items.length > 0 && (
-        <div className="card p-4 border-brand-400/30 flex items-center justify-between gap-4">
+        <div className="card p-4 border-brand-200 bg-brand-50 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-brand-400 text-dark-900 text-xs font-bold flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full bg-brand-500 text-white text-xs font-black flex items-center justify-center">
               {items.length}
             </div>
-            <span className="text-sm text-dark-200">
+            <span className="text-sm text-brand-700 font-bold uppercase tracking-wider">
               {items.length === 1 ? 'vehículo seleccionado' : 'vehículos seleccionados'}
             </span>
           </div>

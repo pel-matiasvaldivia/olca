@@ -54,11 +54,11 @@ export default function Step5Confirm() {
         >
           <CheckCircle className="w-10 h-10 text-brand-400" />
         </motion.div>
-        <h2 className="text-2xl font-black text-dark-50 mb-2">¡Cotización enviada!</h2>
+        <h2 className="text-2xl font-black text-dark-900 mb-2">¡Cotización enviada!</h2>
         <p className="text-dark-400 mb-4">
           Recibiste un email con el detalle. Un comercial te contactará a la brevedad.
         </p>
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-400/10 border border-brand-400/20 rounded-xl text-brand-400 font-bold text-lg mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-50 border border-brand-100 rounded-xl text-brand-600 font-black text-lg mb-8">
           {submittedQuoteNumero}
         </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -72,24 +72,24 @@ export default function Step5Confirm() {
   return (
     <div className="card p-8 animate-in">
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-brand-400/10 flex items-center justify-center">
-          <Send className="w-5 h-5 text-brand-400" />
+        <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center">
+          <Send className="w-5 h-5 text-brand-600" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-dark-50">Confirmá tu cotización</h2>
-          <p className="text-sm text-dark-400">Revisá todo antes de enviar</p>
+          <h2 className="text-xl font-black text-dark-900">Confirmá tu cotización</h2>
+          <p className="text-sm text-dark-500 font-medium">Revisá todo antes de enviar</p>
         </div>
       </div>
 
       {/* Summary */}
       <div className="space-y-4 mb-6">
-        <div className="bg-dark-700/40 rounded-xl p-5">
-          <h3 className="text-xs font-semibold text-dark-400 uppercase tracking-wider mb-3">Datos de contacto</h3>
+        <div className="bg-dark-50 border border-dark-200 rounded-xl p-5">
+          <h3 className="text-[10px] font-black text-dark-400 uppercase tracking-widest mb-3">Datos de contacto</h3>
           <div className="grid sm:grid-cols-2 gap-2 text-sm">
-            <div><span className="text-dark-500">Nombre: </span><span className="text-dark-100">{clientData.nombre}</span></div>
-            <div><span className="text-dark-500">Email: </span><span className="text-dark-100">{clientData.email}</span></div>
-            {clientData.telefono && <div><span className="text-dark-500">Tel: </span><span className="text-dark-100">{clientData.telefono}</span></div>}
-            {clientData.empresa && <div><span className="text-dark-500">Empresa: </span><span className="text-dark-100">{clientData.empresa}</span></div>}
+            <div><span className="text-dark-400 font-bold uppercase text-[10px] tracking-wider">Nombre: </span><span className="text-dark-800 font-bold">{clientData.nombre}</span></div>
+            <div><span className="text-dark-400 font-bold uppercase text-[10px] tracking-wider">Email: </span><span className="text-dark-800 font-bold">{clientData.email}</span></div>
+            {clientData.telefono && <div><span className="text-dark-400 font-bold uppercase text-[10px] tracking-wider">Tel: </span><span className="text-dark-800 font-bold">{clientData.telefono}</span></div>}
+            {clientData.empresa && <div><span className="text-dark-400 font-bold uppercase text-[10px] tracking-wider">Empresa: </span><span className="text-dark-800 font-bold">{clientData.empresa}</span></div>}
           </div>
         </div>
 
@@ -106,9 +106,9 @@ export default function Step5Confirm() {
         </div>
 
         {calculation && (
-          <div className="bg-brand-400/5 border border-brand-400/20 rounded-xl p-5 flex justify-between items-center">
-            <span className="text-dark-300">Total con IVA</span>
-            <span className="text-2xl font-black text-brand-400">{formatMoney(calculation.total)}</span>
+          <div className="bg-brand-50 border border-brand-100 rounded-xl p-5 flex justify-between items-center">
+            <span className="text-dark-500 font-bold uppercase text-[10px] tracking-widest">Total con IVA</span>
+            <span className="text-2xl font-black text-brand-600">{formatMoney(calculation.total)}</span>
           </div>
         )}
       </div>

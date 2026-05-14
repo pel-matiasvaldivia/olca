@@ -29,10 +29,10 @@ const fadeUp = {
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-dark-950 text-dark-50">
+    <div className="min-h-screen bg-white text-dark-900 font-sans">
 
       {/* ── Navbar ──────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-dark-600/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-dark-200">
         <div className="container-max flex items-center justify-between h-16 px-4 md:px-8">
           <span className="text-xl font-black tracking-widest gradient-text">OLCA RENTAL</span>
           <div className="flex items-center gap-3">
@@ -47,8 +47,7 @@ export default function Landing() {
       {/* ── Hero ────────────────────────────────────── */}
       <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
         {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-glow pointer-events-none" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container-max px-4 md:px-8 py-24 relative z-10">
           <div className="max-w-3xl">
@@ -56,9 +55,9 @@ export default function Landing() {
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-400/10 border border-brand-400/20 text-brand-400 text-xs font-semibold mb-6"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
               Nuevo sistema de cotización online
             </motion.div>
 
@@ -69,14 +68,14 @@ export default function Landing() {
               className="text-5xl md:text-7xl font-black leading-tight mb-6"
             >
               La movilidad que{' '}
-              <span className="gradient-text glow-text">mueve tu empresa</span>
+              <span className="text-brand-600">mueve tu empresa</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-dark-300 mb-10 max-w-xl leading-relaxed"
+              className="text-lg md:text-xl text-dark-500 mb-10 max-w-xl leading-relaxed"
             >
               Alquiler y gestión integral de flotas corporativas. Más de 15 años acompañando
               empresas de todo el país con vehículos confiables para su operación diaria.
@@ -99,14 +98,14 @@ export default function Landing() {
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-500 text-xs animate-pulse-slow">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-400 text-xs animate-pulse">
           <span>Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-dark-500 to-transparent" />
+          <div className="w-px h-8 bg-gradient-to-b from-dark-300 to-transparent" />
         </div>
       </section>
 
       {/* ── Stats ───────────────────────────────────── */}
-      <section className="py-16 border-y border-dark-700/50 bg-dark-800/30">
+      <section className="py-16 border-y border-dark-200 bg-dark-50">
         <div className="container-max px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((s, i) => (
@@ -119,8 +118,8 @@ export default function Landing() {
                 variants={fadeUp}
                 className="text-center"
               >
-                <div className="text-4xl font-black gradient-text mb-2">{s.value}</div>
-                <div className="text-sm text-dark-400">{s.label}</div>
+                <div className="text-4xl font-black text-brand-600 mb-2">{s.value}</div>
+                <div className="text-sm text-dark-500 font-bold uppercase tracking-wider">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -132,7 +131,7 @@ export default function Landing() {
         <div className="container-max">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black mb-4">
-              Cotizá en <span className="gradient-text">3 pasos simples</span>
+              Cotizá en <span className="text-brand-600">3 pasos simples</span>
             </h2>
             <p className="text-dark-400 max-w-xl mx-auto">
               Sin llamadas, sin esperas. Completá el formulario online y recibí tu cotización personalizada al instante.
@@ -150,11 +149,11 @@ export default function Landing() {
                 variants={fadeUp}
                 className="card-hover p-8 group"
               >
-                <div className="w-12 h-12 rounded-xl bg-brand-400/10 flex items-center justify-center mb-6 group-hover:bg-brand-400/20 transition-colors">
-                  <f.icon className="w-6 h-6 text-brand-400" />
+                <div className="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-100 transition-colors">
+                  <f.icon className="w-6 h-6 text-brand-600" />
                 </div>
-                <h3 className="text-lg font-bold mb-3 text-dark-50">{f.title}</h3>
-                <p className="text-dark-400 text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="text-lg font-bold mb-3 text-dark-900">{f.title}</h3>
+                <p className="text-dark-500 text-sm leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -162,11 +161,8 @@ export default function Landing() {
       </section>
 
       {/* ── Fleet Categories ─────────────────────────── */}
-      <section className="section bg-dark-800/20">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4">Nuestra <span className="gradient-text">flota</span></h2>
-            <p className="text-dark-400">Vehículos para toda industria y necesidad corporativa</p>
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-dark-900">Nuestra <span className="text-brand-600">flota</span></h2>
+            <p className="text-dark-500 font-medium">Vehículos para toda industria y necesidad corporativa</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {categories.map((c, i) => (
@@ -179,11 +175,11 @@ export default function Landing() {
                 variants={fadeUp}
                 className="card p-6 text-center hover:border-brand-400/30 transition-all cursor-pointer group"
               >
-                <div className="w-12 h-12 rounded-xl bg-dark-700 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-400/10 transition-colors">
-                  <c.icon className="w-6 h-6 text-brand-400" />
+                <div className="w-12 h-12 rounded-xl bg-dark-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-50 transition-colors">
+                  <c.icon className="w-6 h-6 text-brand-500" />
                 </div>
-                <div className="font-semibold text-dark-100 mb-1">{c.label}</div>
-                <div className="text-xs text-dark-500">{c.count}</div>
+                <div className="font-bold text-dark-900 mb-1">{c.label}</div>
+                <div className="text-xs text-dark-400 font-medium">{c.count}</div>
               </motion.div>
             ))}
           </div>
@@ -197,20 +193,20 @@ export default function Landing() {
       </section>
 
       {/* ── Footer ──────────────────────────────────── */}
-      <footer className="border-t border-dark-700/50 py-12">
+      <footer className="border-t border-dark-200 py-12 bg-white">
         <div className="container-max px-4 md:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
-              <div className="text-xl font-black tracking-widest gradient-text mb-2">OLCA RENTAL</div>
-              <p className="text-dark-500 text-sm">Tu socio en movimiento corporativo.</p>
+              <div className="text-xl font-black tracking-widest text-brand-600 mb-2">OLCA RENTAL</div>
+              <p className="text-dark-500 text-sm font-medium">Tu socio en movimiento corporativo.</p>
             </div>
-            <div className="flex gap-6 text-sm text-dark-500">
-              <a href="https://olca.com.ar" className="hover:text-brand-400 transition-colors">olca.com.ar</a>
-              <a href="mailto:olcarental@olca.com" className="hover:text-brand-400 transition-colors">olcarental@olca.com</a>
-              <a href="tel:+5492634476543" className="hover:text-brand-400 transition-colors">+54 9 2634 476543</a>
+            <div className="flex gap-6 text-sm text-dark-600 font-bold uppercase tracking-wider">
+              <a href="https://olca.com.ar" className="hover:text-brand-500 transition-colors">olca.com.ar</a>
+              <a href="mailto:olcarental@olca.com" className="hover:text-brand-500 transition-colors">olcarental@olca.com</a>
+              <a href="tel:+5492634476543" className="hover:text-brand-500 transition-colors">+54 9 2634 476543</a>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-dark-800 text-center text-xs text-dark-600">
+          <div className="mt-8 pt-8 border-t border-dark-100 text-center text-xs text-dark-400 font-medium">
             © {new Date().getFullYear()} OLCA Rental. Todos los derechos reservados.
           </div>
         </div>
