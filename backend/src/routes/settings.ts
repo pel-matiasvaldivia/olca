@@ -1,10 +1,10 @@
 import { FastifyInstance } from 'fastify';
 import { prisma } from '../config/database';
-import { authMiddleware } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
 import { JWTPayload } from '../types';
 
 export default async function settingsRoutes(app: FastifyInstance) {
-  app.addHook('preHandler', authMiddleware);
+  app.addHook('preHandler', authenticate);
 
   // GET /api/settings/email
   app.get('/email', async (req, reply) => {
