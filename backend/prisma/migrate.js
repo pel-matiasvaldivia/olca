@@ -12,7 +12,7 @@ const dbUrl = `postgresql://${dbUser}:${encodedPass}@${dbHost}:${dbPort}/${dbNam
 console.log('🚀 Iniciando migraciones de Prisma...');
 
 try {
-  execSync('npx prisma migrate deploy', {
+  execSync('npx prisma db push --skip-generate --accept-data-loss', {
     env: {
       ...process.env,
       DATABASE_URL: dbUrl,
