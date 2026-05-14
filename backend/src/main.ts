@@ -14,6 +14,7 @@ import authRoutes from './routes/auth';
 import erpRoutes from './routes/erp';
 import quoteRoutes from './routes/quotes';
 import dashboardRoutes from './routes/dashboard';
+import settingsRoutes from './routes/settings';
 
 // Jobs
 import { startSyncJob } from './jobs/syncERPProducts';
@@ -75,6 +76,7 @@ async function bootstrap() {
   await app.register(erpRoutes, { prefix: '/api/erp' });
   await app.register(quoteRoutes, { prefix: '/api/quotes' });
   await app.register(dashboardRoutes, { prefix: '/api/dashboard' });
+  await app.register(settingsRoutes, { prefix: '/api/settings' });
 
   // ── Health check ──────────────────────────────────────
   app.get('/health', async () => ({

@@ -2,29 +2,44 @@ import nodemailer from 'nodemailer';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-});
-
 function formatMoney(n: number) {
   return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(n);
 }
 
 export async function sendQuoteEmail(quoteId: string): Promise<void> {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    logger.warn(`Email NO enviado para cotización ${quoteId}: Credenciales SMTP no configuradas.`);
-    return;
-  }
-
   try {
     const quote = await prisma.quote.findUnique({
       where: { id: quoteId },
-      include: { items: true },
+      include: { 
+        items: true,
+        organization: {
+          include: { emailConfig: true }
+        }
+      },
     });
     if (!quote) return;
+
+    const config = quote.organization.emailConfig;
+    let transporter;
+
+    if (config) {
+      transporter = nodemailer.createTransport({
+        host: config.host,
+        port: config.port,
+        secure: config.secure,
+        auth: { user: config.user, pass: config.pass },
+      });
+    } else if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+    } else {
+      logger.warn(`Email NO enviado para cotización ${quote.numero}: Credenciales SMTP no configuradas.`);
+      return;
+    }
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const itemsHtml = quote.items.map((i) =>
@@ -45,7 +60,7 @@ export async function sendQuoteEmail(quoteId: string): Promise<void> {
       </div>`;
 
     await transporter.sendMail({
-      from: `"OLCA Rental" <${process.env.SMTP_USER}>`,
+      from: config ? `"${config.fromName || 'OLCA Rental'}" <${config.fromEmail || config.user}>` : `"OLCA Rental" <${process.env.SMTP_USER}>`,
       to: quote.clienteEmail,
       subject: `Tu cotización ${quote.numero} — OLCA Rental`,
       html,

@@ -1,7 +1,7 @@
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard, FileText, BarChart2, LogOut, Menu, X, RefreshCw
+  LayoutDashboard, FileText, BarChart2, Settings as SettingsIcon, LogOut, Menu, X, RefreshCw
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
@@ -11,12 +11,14 @@ import { DashboardStats } from '../types';
 import { formatMoney } from '../utils/cn';
 import QuotesTable from '../components/Dashboard/QuotesTable';
 import Analytics from '../components/Dashboard/Analytics';
+import Settings from '../components/Dashboard/Settings';
 import toast from 'react-hot-toast';
 
 const NAV = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
   { to: '/dashboard/quotes', icon: FileText, label: 'Cotizaciones' },
   { to: '/dashboard/analytics', icon: BarChart2, label: 'Analytics' },
+  { to: '/dashboard/settings', icon: SettingsIcon, label: 'Configuración' },
 ];
 
 function StatCard({ label, value, sub, accent }: { label: string; value: string | number; sub?: string; accent?: boolean }) {
@@ -180,6 +182,7 @@ export default function Dashboard() {
             <Route index element={<Overview />} />
             <Route path="quotes" element={<QuotesTable />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="settings" element={<Settings />} />
           </Routes>
         </main>
       </div>

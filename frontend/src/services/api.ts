@@ -66,6 +66,12 @@ export const quotesApi = {
   convert: (id: string) => api.post(`/quotes/${id}/convert`),
 };
 
+// ── Settings ──────────────────────────────────────────
+export const settingsApi = {
+  getEmailConfig: () => api.get('/settings/email'),
+  updateEmailConfig: (payload: unknown) => api.post('/settings/email', payload),
+};
+
 // ── Dashboard ─────────────────────────────────────────
 export const dashboardApi = {
   stats: () => api.get('/dashboard'),

@@ -65,6 +65,7 @@ model Organization {
   // Relations
   users     User[]
   erpConfig ERPConfig?
+  emailConfig EmailConfig?
   quotes    Quote[]
   products  Product[]
   syncLogs  SyncLog[]
@@ -280,4 +281,25 @@ model SyncLog {
 
   @@index([organizationId])
   @@index([iniciadoEn])
+}
+
+// ============================================
+// EMAIL CONFIG
+// ============================================
+
+model EmailConfig {
+  id              String       @id @default(cuid())
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String       @unique
+
+  host            String
+  port            Int          @default(587)
+  secure          Boolean      @default(false)
+  user            String
+  pass            String       @db.Text
+  fromName        String?
+  fromEmail       String?
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
