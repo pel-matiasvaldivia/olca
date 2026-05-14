@@ -80,7 +80,7 @@ services:
     container_name: olca_frontend
     restart: unless-stopped
     ports:
-      - '80:80'
+      - '8585:80'
     depends_on:
       - backend
     profiles:
