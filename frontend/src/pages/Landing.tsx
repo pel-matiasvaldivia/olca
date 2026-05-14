@@ -161,6 +161,9 @@ export default function Landing() {
       </section>
 
       {/* ── Fleet Categories ─────────────────────────── */}
+      <section className="section bg-dark-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black mb-4 text-dark-900">Nuestra <span className="text-brand-600">flota</span></h2>
             <p className="text-dark-500 font-medium">Vehículos para toda industria y necesidad corporativa</p>
           </div>
